@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO.Ports;
 
 namespace lab1
 {
@@ -29,6 +30,8 @@ namespace lab1
 
         private static List<(string, string)> GettPortNames(string configFileName)
         {
+            var serialPortNames = SerialPort.GetPortNames();
+
             var portNames = new List<(string, string)>();
 
             if (File.Exists(configFileName))
@@ -43,7 +46,9 @@ namespace lab1
                         string port1 = ports[0].Trim();
                         string port2 = ports[1].Trim();
 
-                        portNames.Add((port1, port2));
+                        if(serialPortNames.Contains(port1) && serialPortNames.Contains(port2))
+                            portNames.Add((port1, port2));
+
                     }
                 }
             }

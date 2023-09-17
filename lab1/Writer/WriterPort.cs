@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.Coders;
 using System.Text;
 
 namespace Writer
@@ -13,6 +14,8 @@ namespace Writer
         {
             base.PortInfo();
 
+            BitstuffCoder coder = new BitstuffCoder();
+
             while (true)
             {
                 var data = Console.ReadLine();
@@ -21,7 +24,13 @@ namespace Writer
 
                 var valueBytes = bytes.Append((byte)0).ToArray();
 
-                _serialPort.Write(valueBytes, 0, valueBytes.Length);
+                var stuffedValue = coder.Encode(BaseCoder.Decode(valueBytes));
+
+                var package = DataPackageOperations.Configure(stuffedValue);
+
+                var dataToSend = package.Serialize();
+
+                _serialPort.Write(dataToSend, 0, dataToSend.Length);
             }
         }
     }
