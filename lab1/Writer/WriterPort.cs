@@ -1,5 +1,7 @@
 ﻿using Common;
 using Common.Coders;
+using Common.Extensions;
+using System.Collections;
 using System.Text;
 
 namespace Writer
@@ -14,7 +16,7 @@ namespace Writer
         {
             base.PortInfo();
 
-            BitstuffCoder coder = new BitstuffCoder();
+            BitstuffCoder _bitstuffCoder = new BitstuffCoder();
 
             while (true)
             {
@@ -24,9 +26,11 @@ namespace Writer
 
                 var valueBytes = bytes.Append((byte)0).ToArray();
 
-                var stuffedValue = coder.Encode(BaseCoder.Decode(valueBytes));
+                var stuffedValue = _bitstuffCoder.Encode(BaseCoder.Decode(valueBytes));
 
-                var package = DataPackageOperations.Configure(stuffedValue);
+                var hamingValue = HammingCoder.Encode(stuffedValue);
+
+                var package = DataPackageOperations.Configure(hamingValue);
 
                 var dataToSend = package.Serialize();
 

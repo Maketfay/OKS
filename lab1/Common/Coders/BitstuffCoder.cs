@@ -1,17 +1,13 @@
 ﻿using Common.Extensions;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Coders
 {
     public class BitstuffCoder
     {
-        private const string beforeBitstuff = "0101111";
-        private const string afterBitstuff = "01011111";
+        private const string beforeBitstuff = "0001000";
+        private const string afterBitstuff = "00010000";
 
         public string Decode(byte[] message)
         {

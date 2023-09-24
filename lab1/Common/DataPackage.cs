@@ -43,7 +43,7 @@ namespace Common
             Length = BitConverter.ToInt32(data, 9);
             Data = new byte[Length];
             Array.Copy(data, 13, Data, 0, Length);
-            Fcs = data[data.Length - 1];
+            Fcs = data[Length + 13];
 
             return true;
         }
