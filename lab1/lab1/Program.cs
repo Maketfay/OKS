@@ -68,13 +68,13 @@ namespace lab1
             return p;
         }
 
-        private static Process StartWriter(string portName, int speed)
+        private static Process StartWriter(string portName, int speed, string destinationPort)
         {
             var p = new Process();
             
             p.StartInfo.FileName = $"D:\\BSUIR\\5 term\\ОКС\\lab1\\Writer\\bin\\Debug\\net7.0\\Writer.exe";
             p.StartInfo.UseShellExecute = true;
-            p.StartInfo.Arguments = string.Format("{0},{1}", portName, speed);
+            p.StartInfo.Arguments = string.Format("{0},{1},{2}", portName, speed, destinationPort);
             p.Start();
 
             return p;            
@@ -109,7 +109,7 @@ namespace lab1
             foreach (var portPair in portPairs)
             {
                 processes.Add(StartReader(portPair.Item1, speed));
-                processes.Add(StartWriter(portPair.Item2, speed));
+                processes.Add(StartWriter(portPair.Item2, speed, portPair.Item1));
             }
 
             return processes;

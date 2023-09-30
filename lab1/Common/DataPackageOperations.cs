@@ -7,13 +7,13 @@ namespace Common
 {
     public static class DataPackageOperations
     {
-        public static DataPackage Configure(byte[] data) 
+        public static DataPackage Configure(byte[] data, int sourceAdress, int destinationAdress) 
         {
             return new DataPackage
             {
                 Flag = GetStartFlag(),
-                DestinationAddress = 0,
-                SourceAddress = 0,
+                DestinationAddress = sourceAdress,
+                SourceAddress = destinationAdress,
                 Length = data.Length,
                 Data = data,
                 Fcs = CalculateFcs(data)

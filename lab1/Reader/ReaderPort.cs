@@ -9,10 +9,13 @@ namespace Reader
     internal class ReaderPort : PortWrapper
     {
         BitstuffCoder _bitstuffCoder;
+
+        CsmaCommunicator _communicator;
         public ReaderPort(string portName, int speed) : base(portName, speed)
         {
             _serialPort.DataReceived += new SerialDataReceivedEventHandler(Output);
             _bitstuffCoder = new BitstuffCoder();
+            _communicator = new CsmaCommunicator();
         }
 
         public void ReadProccess() 
@@ -24,11 +27,10 @@ namespace Reader
 
         private void Output(object sender, SerialDataReceivedEventArgs e)
         {
-            var buffer = new byte[1024];
-            var readed = _serialPort.Read(buffer, 0, 1024);
+            var buffer = _communicator.Read(_serialPort);
 
             int startIndex = -1;
-            for (int i = 0; i < readed; i++)
+            for (int i = 0; i < buffer.Length; i++)
             {
                 if (buffer[i] == DataPackageOperations.GetStartFlag())
                 {

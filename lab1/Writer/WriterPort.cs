@@ -1,18 +1,22 @@
 ﻿using Common;
 using Common.Coders;
-using Common.Extensions;
-using System.Collections;
 using System.Text;
 
 namespace Writer
 {
     public class WriterPort : PortWrapper
     {
+        private int portId;
+
+        private CsmaCommunicator _communicator;
         public WriterPort(string portName,int  speed) : base(portName, speed)
         {
+            portId = int.Parse(portName.Replace("COM", "").Trim());
+
+            _communicator = new CsmaCommunicator();
         }
 
-        public void WriteProccess()
+        public void WriteProccess(int destinationPort)
         {
             base.PortInfo();
 
@@ -30,11 +34,11 @@ namespace Writer
 
                 var hamingValue = HammingCoder.Encode(stuffedValue);
 
-                var package = DataPackageOperations.Configure(hamingValue);
+                var package = DataPackageOperations.Configure(hamingValue, portId, destinationPort);
 
                 var dataToSend = package.Serialize();
 
-                _serialPort.Write(dataToSend, 0, dataToSend.Length);
+                _communicator.Send(_serialPort, dataToSend);
             }
         }
     }
