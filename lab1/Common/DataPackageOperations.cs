@@ -1,31 +1,31 @@
 ﻿using Common.Coders;
+using Common.Data;
 using Common.Extensions;
 using System.Collections;
-using System.Dynamic;
 
 namespace Common
 {
     public static class DataPackageOperations
     {
-        public static DataPackage Configure(byte[] data, int sourceAdress, int destinationAdress) 
+        public static DataPackage Configure(byte[] data, int sourceAdress, int destinationAdress)
         {
             return new DataPackage
             {
                 Flag = GetStartFlag(),
-                DestinationAddress = sourceAdress,
-                SourceAddress = destinationAdress,
+                DestinationAddress = destinationAdress,
+                SourceAddress = sourceAdress,
                 Length = data.Length,
                 Data = data,
                 Fcs = CalculateFcs(data)
             };
         }
 
-        public static byte GetStartFlag() 
+        public static byte GetStartFlag()
         {
             return 'z' + 14;
         }
 
-        public static bool GetFcs(byte fcs) 
+        public static bool GetFcs(byte fcs)
         {
             var bitString = BaseCoder.BitsToString(new BitArray(fcs));
 
@@ -33,7 +33,7 @@ namespace Common
 
         }
 
-        public static byte CalculateFcs(byte[] message) 
+        public static byte CalculateFcs(byte[] message)
         {
             var bitString = BaseCoder.BitsToString(new BitArray(message));
 
@@ -48,7 +48,7 @@ namespace Common
             return result[0];
         }
 
-        public static bool CalculateParitet(string bitSting) 
+        public static bool CalculateParitet(string bitSting)
         {
             return bitSting.Where(s => s == '1').Count() % 2 == 1;
         }

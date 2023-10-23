@@ -1,6 +1,5 @@
 ﻿using Common.Extensions;
 using System.Collections;
-using System.Text;
 
 namespace Common.Coders
 {
@@ -46,7 +45,7 @@ namespace Common.Coders
         {
             var bitString = BaseCoder.BitsToString(new BitArray(bytes));
 
-            bitString = InitializeControlBits(bitString); 
+            bitString = InitializeControlBits(bitString);
 
             var controlLines = CalculateControlLines(bitString);
 
@@ -125,7 +124,7 @@ namespace Common.Coders
 
         public static string FixBit(string bitString, int errorBit)
         {
-            var bit = bitString[errorBit-1];
+            var bit = bitString[errorBit - 1];
             return bitString.Remove(errorBit - 1, 1).Insert(errorBit - 1, bit == '1' ? "0" : "1");
         }
 
@@ -154,23 +153,23 @@ namespace Common.Coders
 
         #endregion
 
-        public static string DistortBits(string bitString) 
+        public static string DistortBits(string bitString)
         {
-            Random random = new Random(); 
+            Random random = new Random();
 
             var randomValue = random.Next(100);
 
-            Console.WriteLine("Random value: "+ randomValue);
+            Console.WriteLine("Random value: " + randomValue);
 
-            if(randomValue > 50) 
+            if (randomValue > 50)
             {
                 var bitNumber = randomValue % bitString.Length;
                 if (bitNumber < 2)
                     bitNumber = 2;
                 bitString = FixBit(bitString, bitNumber);
-                
-                if(randomValue > 75)
-                    bitString = FixBit(bitString, bitNumber-1);
+
+                if (randomValue > 75)
+                    bitString = FixBit(bitString, bitNumber - 1);
             }
 
             return bitString;

@@ -1,9 +1,4 @@
-﻿using Common.Coders;
-using System.Collections;
-using System.IO.Ports;
-using System.Text;
-
-namespace Common
+﻿namespace Common.Data
 {
     public class DataPackage
     {
@@ -14,7 +9,7 @@ namespace Common
         public byte[] Data { get; set; }
         public byte Fcs { get; set; }
 
-        public byte[] Serialize() 
+        public byte[] Serialize()
         {
             List<byte> frame = new List<byte>
             {
@@ -30,9 +25,9 @@ namespace Common
             return frame.ToArray();
         }
 
-        public bool Deserialize(byte[] data) 
+        public bool Deserialize(byte[] data)
         {
-            if (data == null || data.Length < 14) 
+            if (data == null || data.Length < 14)
             {
                 return false;
             }

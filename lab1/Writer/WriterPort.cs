@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.Coders;
+using Common.Communicators;
 using System.Text;
 
 namespace Writer
@@ -38,7 +39,7 @@ namespace Writer
 
                 var dataToSend = package.Serialize();
 
-                _communicator.Send(_serialPort, dataToSend);
+                _communicator.Send(serialPort, dataToSend);
             }
         }
     }

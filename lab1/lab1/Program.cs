@@ -80,6 +80,18 @@ namespace lab1
             return p;            
         }
 
+        private static Process StartNode(string portName1, string portName2, int speed, int portId)
+        {
+            var p = new Process();
+
+            p.StartInfo.FileName = $"D:\\BSUIR\\5 term\\ОКС\\lab1\\Node\\bin\\Debug\\net7.0\\Node.exe";
+            p.StartInfo.UseShellExecute = true;
+            p.StartInfo.Arguments = string.Format("{0},{1},{2},{3}", portName1, portName2, speed, portId);
+            p.Start();
+
+            return p;
+        }
+
         private static int EnterSpeed() 
         {
             int speed;
@@ -106,10 +118,11 @@ namespace lab1
         {
             List<Process> processes = new List<Process>();
 
-            foreach (var portPair in portPairs)
+            for(int i = 0; i < portPairs.Count; i++)
             {
-                processes.Add(StartReader(portPair.Item1, speed));
-                processes.Add(StartWriter(portPair.Item2, speed, portPair.Item1));
+                processes.Add(StartNode(portPairs[i].Item1, portPairs[i].Item2, speed, i+1));
+                //processes.Add(StartReader(portPair.Item1, speed));
+                //processes.Add(StartWriter(portPair.Item2, speed, portPair.Item1));
             }
 
             return processes;

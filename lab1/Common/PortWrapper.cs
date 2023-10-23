@@ -4,24 +4,24 @@ namespace Common
 {
     public class PortWrapper : IDisposable
     {
-        protected SerialPort _serialPort;
+        public SerialPort serialPort;
 
         public PortWrapper(string portName, int speed)
         {
-            _serialPort = new SerialPort(portName, speed, Parity.None, 8, StopBits.One);
-            _serialPort.Open();
+            serialPort = new SerialPort(portName, speed, Parity.None, 8, StopBits.One);
+            serialPort.Open();
 
-            _serialPort.ReadTimeout = 500;
-            _serialPort.WriteTimeout = 500;
+            serialPort.ReadTimeout = 500;
+            serialPort.WriteTimeout = 500;
         }
 
-        public void PortInfo() 
+        public void PortInfo()
         {
-            Console.WriteLine($"Process started on port {_serialPort.PortName} with speed: {_serialPort.BaudRate}");
+            Console.WriteLine($"Process started on port {serialPort.PortName} with speed: {serialPort.BaudRate}");
         }
         public void Dispose()
         {
-            _serialPort.Dispose();
+            serialPort.Dispose();
         }
     }
 }

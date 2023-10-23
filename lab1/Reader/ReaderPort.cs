@@ -1,5 +1,7 @@
 ﻿using Common;
 using Common.Coders;
+using Common.Communicators;
+using Common.Data;
 using Common.Extensions;
 using System.Collections;
 using System.IO.Ports;
@@ -13,7 +15,7 @@ namespace Reader
         CsmaCommunicator _communicator;
         public ReaderPort(string portName, int speed) : base(portName, speed)
         {
-            _serialPort.DataReceived += new SerialDataReceivedEventHandler(Output);
+            serialPort.DataReceived += new SerialDataReceivedEventHandler(Output);
             _bitstuffCoder = new BitstuffCoder();
             _communicator = new CsmaCommunicator();
         }
@@ -27,7 +29,7 @@ namespace Reader
 
         private void Output(object sender, SerialDataReceivedEventArgs e)
         {
-            var buffer = _communicator.Read(_serialPort);
+            var buffer = _communicator.Read(serialPort);
 
             int startIndex = -1;
             for (int i = 0; i < buffer.Length; i++)

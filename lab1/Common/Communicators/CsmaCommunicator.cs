@@ -2,7 +2,7 @@
 using System.Collections;
 using System.IO.Ports;
 
-namespace Common
+namespace Common.Communicators
 {
     public class CsmaCommunicator
     {
@@ -11,10 +11,9 @@ namespace Common
         private const byte END_OF_MESSAGE = 126;
 
         private Random _random = new Random();
-        public void Send(SerialPort serialPort, byte[] data) 
+        public void Send(SerialPort serialPort, byte[] data)
         {
-            Console.WriteLine("Data length: " + data.Length);
-            foreach (Byte item in data)
+            foreach (byte item in data)
             {
                 for (int numberOfAttempt = 0; ; numberOfAttempt++)
                 {
@@ -24,7 +23,6 @@ namespace Common
 
                     if (isCollide())
                     {
-                        Console.WriteLine("Collision detected, jam sended");
                         serialPort.Write(new byte[] { JAM_SIGNAL }, 0, 1);
 
                         delaySending(numberOfAttempt);
@@ -37,9 +35,9 @@ namespace Common
             serialPort.Write(new byte[] { END_OF_MESSAGE }, 0, 1);
         }
 
-        public byte[] Read(SerialPort serialPort) 
+        public byte[] Read(SerialPort serialPort)
         {
-            var receiveBuffer = new List<Byte>();
+            var receiveBuffer = new List<byte>();
 
             while (true)
             {
@@ -76,10 +74,7 @@ namespace Common
 
         private bool isChannelBusy() => randomChance();
         private bool isCollide() => randomChance();
-        private bool randomChance()
-        {
-            return _random.Next(100) > 50;
-        }
+        private bool randomChance() => _random.Next(100) > 50;
         private void delaySending(int number) => Thread.Sleep(new Random().Next((int)Math.Pow(2, Math.Min(10, number))) * 10);
     }
 }
